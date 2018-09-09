@@ -13,7 +13,7 @@ after using this gem you can add optional fields on jbuilder template and when y
 
 ### optional fields
 ``` ruby
-#app/partials/_user.jbuilder
+#app/views/partials/_user.jbuilder
 
 json.id user.id
 json.optional! :username, user.username
@@ -34,13 +34,13 @@ also you can use partials as a optional field in another partial
 
 
 ``` ruby
-#app/partials/_pet.jbuilder
+#app/views/partials/_pet.jbuilder
 
 json.id pet.id
-json.optional! :username, pet.name
+json.optional! :name, pet.name
 ```
 ``` ruby
-#app/partials/_user.jbuilder
+#app/views/partials/_user.jbuilder
 
 json.id user.id
 json.optional! :username, user.username
@@ -59,7 +59,7 @@ json.partial! 'partials/user', user: @user, contains: [:username, pet: [:name]]
 if you have many pets all of them will be render
 
 ``` ruby
-#app/partials/_user.jbuilder
+#app/views/partials/_user.jbuilder
 
 json.id user.id
 json.optional! :username, user.username
