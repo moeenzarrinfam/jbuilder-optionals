@@ -5,21 +5,22 @@ module JbuilderOptionals
   end
 
   def optional_partial!(*args)
-    partial_contains = ::Hash === @contains.last ? @contains.last[args.last[:key]] : nil
-    return unless  @contains&.any?{|i| i == args.last[:key]} || @contains.last&.keys&.any?{|i| i == args.last[:key]}
+    key = args.first.split('/').last
+    partial_contains = ::Hash === @contains.last ? @contains.last[key.to_sym] : nil
+    return unless @contains&.any?{|i| i.to_s == key.to_s} || @contains.last&.keys&.any?{|i| i.to_s == key.to_s}
     if ::Hash === args.last
       args.last[:contains] = partial_contains
     else
       args.push(contains: partial_contains)
     end
-    if args.last[:key].to_s == args.last[:key].to_s.singularize
-      set!args.last[:key] do
+    if key.to_s == key.to_s.singularize
+      set!key do
         partial!(*args)
       end
     else
-      set!args.last[:key] do
-        array!args.last[args.last[:key]] do |record|
-          args.last[args.last[:key].to_s.singularize.to_sym] = record
+      set!key do
+        array! args.last[key.to_sym] do |record|
+          args.last[key.to_s.singularize.to_sym] = record
           partial!(*args)
         end
       end
